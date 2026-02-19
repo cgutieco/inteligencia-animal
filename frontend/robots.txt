@@ -1,0 +1,11 @@
+# robots.txt para Inteligencia Animal
+User-agent: *
+Allow: /
+
+# Archivos que no necesitan ser indexados
+Disallow: /sw.js
+Disallow: /_headers
+
+# Sitemap (actualiza con tu URL de producción cuando esté disponible)
+# Sitemap: https://tudominio.com/sitemap.xml
+

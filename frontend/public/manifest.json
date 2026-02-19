@@ -1,0 +1,27 @@
+{
+  "name": "Inteligencia Animal",
+  "short_name": "IA Animal",
+  "description": "Chat con personalidad animal impulsado por Gemini AI",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFF3E0",
+  "theme_color": "#FF9F1C",
+  "orientation": "any",
+  "lang": "es",
+  "categories": ["entertainment", "education"],
+  "icons": [
+    {
+      "src": "/public/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/public/icons/icon-512.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

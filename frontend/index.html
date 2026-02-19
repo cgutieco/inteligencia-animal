@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inteligencia Animal</title>
+    <meta name="description" content="Chat con personalidad animal impulsado por IA" />
+
+    <!-- Security: CSP (adjust connect-src to your API domain in production) -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval';
+                   style-src 'self' 'unsafe-inline';
+                   font-src 'self';
+                   img-src 'self' data: blob:;
+                   connect-src 'self' https://*.workers.dev;" />
+
+    <!-- PWA -->
+    <link rel="icon" type="image/png" href="/public/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/public/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="500x500" href="/public/icons/icon-500.png" />
+    <link rel="manifest" href="/public/manifest.json" />
+    <meta name="theme-color" content="#FF9F1C" />
+    <link rel="apple-touch-icon" href="/public/icons/icon-192.png" />
+
+    <!-- Critical fonts -->
+    <link rel="preload" href="/public/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/public/fonts/inter-latin-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/public/fonts/material-symbols.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- ALL CSS -->
+    <link data-trunk rel="inline" href="styles/inline.css" />
+
+    <!-- Copy sw.js, _headers, robots.txt, and public/ to dist -->
+    <link data-trunk rel="copy-file" href="sw.js" />
+    <link data-trunk rel="copy-file" href="_headers" />
+    <link data-trunk rel="copy-file" href="robots.txt" />
+    <link data-trunk rel="copy-dir" href="public" />
+
+</head>
+<body data-theme="cat">
+    <!-- Leptos mounts here via mount_to_body -->
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('/sw.js');
+                    console.log('[App] SW registered, scope:', reg.scope);
+
+                    const updateInterval = setInterval(() => {
+                        reg.update().catch(() => {});
+                    }, 60_000);
+
+                    window.addEventListener('pagehide', () => {
+                        clearInterval(updateInterval);
+                    }, { once: true });
+
+                    const notifyUpdateAvailable = () => {
+                        window.dispatchEvent(new CustomEvent('swUpdateAvailable'));
+                    };
+
+                    if (reg.waiting) {
+                        notifyUpdateAvailable();
+                    }
+
+                    reg.addEventListener('updatefound', () => {
+                        const newSW = reg.installing;
+                        if (!newSW) return;
+
+                        newSW.addEventListener('statechange', () => {
+                            if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                                notifyUpdateAvailable();
+                            }
+                        });
+                    });
+
+                    window.addEventListener('swSkipWaiting', () => {
+                        if (reg.waiting) {
+                            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        }
+                    });
+
+                    let refreshing = false;
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        if (!refreshing) {
+                            refreshing = true;
+                            window.location.reload();
+                        }
+                    });
+
+                } catch (err) {
+                    console.warn('[App] SW registration failed:', err);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

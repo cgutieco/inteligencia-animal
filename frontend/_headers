@@ -1,0 +1,35 @@
+# Cloudflare Pages _headers file
+# Placed in dist/ via Trunk copy-file
+
+# Fonts — immutable, 1 year
+/public/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Hashed static assets (Trunk generates these)
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+/*.wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images — 1 month
+/public/animals/*
+  Cache-Control: public, max-age=2592000, immutable
+/public/icons/*
+  Cache-Control: public, max-age=2592000, immutable
+
+# Service Worker — never cache
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# HTML — always revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Manifest
+/public/manifest.json
+  Cache-Control: public, max-age=3600
+

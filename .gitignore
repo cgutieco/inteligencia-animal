@@ -1,0 +1,41 @@
+# ── Rust / Cargo ──
+/target/
+**/*.rs.bk
+
+# ── Trunk (frontend build output) ──
+/frontend/dist/
+.trunk/
+
+# ── Wrangler (worker build output) ──
+/worker/build/
+/worker/dist/
+.wrangler/
+wrangler.toml.local
+
+# ── Secrets & Environment ──
+.dev.vars
+.env
+.env.local
+.env.*.local
+
+# ── IDE ──
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.vscode/
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+.directory
+.Trash-*
+
+# ── Logs ──
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

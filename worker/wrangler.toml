@@ -1,0 +1,13 @@
+name = "api-worker"
+main = "build/worker/shim.mjs"
+compatibility_date = "2025-01-01"
+
+[build]
+command = "worker-build --release"
+
+[vars]
+# GEMINI_API_KEY should be set as a secret via: wrangler secret put GEMINI_API_KEY
+# Restrict CORS to your frontend domain (use "*" only for local development)
+# Production: https://inteligencia-animal.cgutieco.com
+# Dev: Use "*" or set via wrangler.toml environments
+ALLOWED_ORIGIN = "https://inteligencia-animal.cgutieco.com"
