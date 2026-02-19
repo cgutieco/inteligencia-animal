@@ -6,6 +6,5 @@ Allow: /
 Disallow: /sw.js
 Disallow: /_headers
 
-# Sitemap (actualiza con tu URL de producción cuando esté disponible)
-# Sitemap: https://tudominio.com/sitemap.xml
+Sitemap: https://inteligencia-animal.cgutieco.com/sitemap.xml
 
