@@ -1,0 +1,53 @@
+name: Deploy Worker
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'worker/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-worker.yml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'worker/**'
+      - 'shared/**'
+      - '.github/workflows/deploy-worker.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Worker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+            targets: wasm32-unknown-unknown
+      
+      # Cache cargo registry and build artifacts
+      - name: Cache Cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-worker-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-worker-
+
+      - name: Install worker-build
+        run: cargo install worker-build
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy
