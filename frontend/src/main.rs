@@ -2,6 +2,7 @@ use leptos::prelude::*;
 
 mod app;
 mod components;
+mod config;
 mod i18n;
 
 fn main() {

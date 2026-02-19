@@ -1,5 +1,6 @@
 use crate::components::animal_card::AnimalCard;
 use crate::components::chat_bubble::{ChatBubble, ThinkingBubble};
+use crate::config::api_base_url;
 use leptos::task::spawn_local;
 use leptos::prelude::*;
 use shared::{AnimalType, ChatSession, ChatMessage, Role, ChatRequest, ChatResponse, Language};
@@ -65,7 +66,8 @@ pub fn ChatArea() -> impl IntoView {
                     history: chat.messages[..chat.messages.len()-1].to_vec(),
                 };
 
-                let response = Request::post("/api/chat")
+                let api_url = format!("{}/chat", api_base_url());
+                let response = Request::post(&api_url)
                     .json(&req)
                     .expect("Failed to serialize request")
                     .send()

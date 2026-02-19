@@ -9,11 +9,11 @@
     <!-- Security: CSP (adjust connect-src to your API domain in production) -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
-                   script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval';
+                   script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://static.cloudflareinsights.com;
                    style-src 'self' 'unsafe-inline';
                    font-src 'self';
                    img-src 'self' data: blob:;
-                   connect-src 'self' https://*.workers.dev;" />
+                   connect-src 'self' https://*.workers.dev https://inteligencia-animal-api.cgutieco.com https://cloudflareinsights.com;" />
 
     <!-- PWA -->
     <link rel="icon" type="image/png" href="/public/icons/icon-192.png" />
