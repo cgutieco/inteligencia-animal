@@ -112,8 +112,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
           workingDirectory: worker
-          secrets: |
-            GEMINI_API_KEY
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
 
