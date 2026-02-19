@@ -3,10 +3,10 @@ name: Deploy to Cloudflare
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 env:
   CARGO_TERM_COLOR: always
@@ -61,56 +61,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy frontend/dist --project-name=inteligencia-animal
-
-  # ─────────────────────────────────────────────────
-  # Deploy Worker to Cloudflare
-  # ─────────────────────────────────────────────────
-  deploy-worker:
-    name: ⚙️ Deploy Worker
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 🦀 Setup Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: wasm32-unknown-unknown
-          profile: minimal
-          override: true
-
-      - name: 📦 Cache Rust dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-worker-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-worker-
-
-      - name: 🔧 Install worker-build
-        run: |
-          if ! command -v worker-build &> /dev/null; then
-            cargo install worker-build --locked
-          fi
-
-      - name: 🏗️ Build worker
-        run: |
-          cd worker
-          worker-build --release
-
-      - name: 🚀 Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
-          workingDirectory: worker
-
 
