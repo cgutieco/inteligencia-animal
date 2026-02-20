@@ -2,6 +2,9 @@
 name = "api-worker"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+authors = ["cgutieco"]
+repository = "https://github.com/cgutieco/inteligencia-animal"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

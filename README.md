@@ -2,6 +2,7 @@
 
 [![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![WebAssembly](https://img.shields.io/badge/WebAssembly-654FF0?style=for-the-badge&logo=webassembly&logoColor=white)](https://webassembly.org/)
+[![PWA](https://img.shields.io/badge/PWA-Progressive%20Web%20App-2b8cff?style=for-the-badge&logo=google-chrome&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)](https://workers.cloudflare.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -157,7 +158,7 @@ sequenceDiagram
 - **Lenguaje**: Rust (compartido entre frontend y backend)
 - **Frontend**: Leptos framework para WebAssembly
 - **Backend**: Cloudflare Workers con workers-rs
-- **Inteligencia Artificial**: Google Gemini 1.5 Flash
+- **Inteligencia Artificial**: Google Gemini 2.0 Flash
 - **Build Tool**: Trunk
 - **Estilos**: CSS nativo con variables personalizadas
 
@@ -207,7 +208,7 @@ Capacidad de descargar y ejecutar un modelo de lenguaje directamente en el naveg
 
 - Requiere hardware moderno: mínimo 8GB RAM, navegador con soporte WebGPU
 - Respuestas más lentas (~500ms por token) comparado con la API cloud
-- Calidad de respuestas inferior a Gemini 1.5, pero suficiente para conversaciones básicas
+- Calidad de respuestas inferior a Gemini 2.0, pero suficiente para conversaciones básicas
 - Consumo elevado de batería en dispositivos móviles
 - Verificación de espacio en disco y capacidades del dispositivo antes de descargar
 

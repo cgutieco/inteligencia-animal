@@ -4,3 +4,6 @@ resolver = "2"
 
 [workspace.package]
 edition = "2024"
+license = "MIT"
+authors = ["cgutieco"]
+repository = "https://github.com/cgutieco/inteligencia-animal"

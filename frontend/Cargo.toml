@@ -2,6 +2,9 @@
 name = "frontend"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+authors = ["cgutieco"]
+repository = "https://github.com/cgutieco/inteligencia-animal"
 
 [dependencies]
 console_error_panic_hook = "0.1.7"
