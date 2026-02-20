@@ -8,5 +8,10 @@ no_sri = true
 [watch]
 ignore = ["dist"]
 
+[[hooks]]
+stage = "post_build"
+command = "sh"
+command_arguments = ["-c", "cp _headers dist/_headers && cp robots.txt dist/robots.txt && cp sitemap.xml dist/sitemap.xml && cp sw.js dist/sw.js"]
+
 [[proxy]]
 backend = "http://localhost:8787/api"
