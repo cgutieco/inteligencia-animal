@@ -76,6 +76,7 @@ pub fn Sidebar() -> impl IntoView {
 
                         let is_active = move || active_chat_id.get() == Some(id.clone());
                         let is_menu_open = Signal::derive(move || menu_open_for.get() == Some(id_for_signal.clone()));
+                        let id_for_title = id_for_rename.clone();
 
                         view! {
                             <div
@@ -86,7 +87,7 @@ pub fn Sidebar() -> impl IntoView {
                                     sidebar_open.set(false);
                                 }
                             >
-                                <span class="chat-item-title">{chat.title}</span>
+                                <span class="chat-item-title">{move || chats.get().iter().find(|c| c.id == id_for_title).map(|c| c.title.clone()).unwrap_or_default()}</span>
                                 <button
                                     class="chat-item-menu-btn"
                                     on:click=move |ev| {

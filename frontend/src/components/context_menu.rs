@@ -14,7 +14,7 @@ pub fn ContextMenu(
         <Show when=move || visible.get()>
             <>
                 <div class="context-menu-overlay" on:click=move |_| on_close.run(())></div>
-                <div class="context-menu">
+                <div class="context-menu" on:click=move |ev| ev.stop_propagation()>
                     <button class="menu-item" on:click=move |_| {
                         on_rename.run(());
                         on_close.run(());
