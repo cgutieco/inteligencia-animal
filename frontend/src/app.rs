@@ -28,7 +28,16 @@ pub fn App() -> impl IntoView {
     let sidebar_open: RwSignal<bool> = RwSignal::new(false);
     let is_thinking: RwSignal<bool> = RwSignal::new(false);
 
-    let i18n = Memo::new(move |_| get_translations(language.get()));
+    let i18n = Memo::new(move |_| {
+        let browser_lang = web_sys::window().and_then(|w| w.navigator().language());
+        let resolved = language.get().resolve(browser_lang);
+        get_translations(resolved)
+    });
+
+    let resolved_language = Memo::new(move |_| {
+        let browser_lang = web_sys::window().and_then(|w| w.navigator().language());
+        language.get().resolve(browser_lang)
+    });
 
     let animal = Memo::new(move |_| {
         active_chat_id
@@ -41,6 +50,7 @@ pub fn App() -> impl IntoView {
     provide_context(chats);
     provide_context(active_chat_id);
     provide_context(language);
+    provide_context(resolved_language);
     provide_context(sidebar_open);
     provide_context(is_thinking);
     provide_context(animal);

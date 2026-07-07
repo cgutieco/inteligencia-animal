@@ -22,7 +22,7 @@ pub fn ChatArea() -> impl IntoView {
     let active_chat_id = use_context::<RwSignal<Option<String>>>().expect("active_chat_id context");
     let sidebar_open = use_context::<RwSignal<bool>>().expect("sidebar_open context");
     let is_thinking = use_context::<RwSignal<bool>>().expect("is_thinking");
-    let language = use_context::<RwSignal<Language>>().expect("language");
+    let resolved_language = use_context::<Memo<Language>>().expect("resolved_language");
     let i18n = use_context::<Memo<Translations>>().expect("i18n");
     
     let animal = use_context::<Memo<AnimalType>>().expect("AnimalType");
@@ -43,7 +43,7 @@ pub fn ChatArea() -> impl IntoView {
         let current_id = match active_chat_id.get() {
             Some(id) => id,
             None => {
-                let current_lang = language.get();
+                let current_lang = resolved_language.get();
                 let mut new_chat =
                     ChatSession::new(animal.get(), IntelligenceLevel::Medium, current_lang);
                 new_chat.title = i18n.get().new_conversation.to_string();

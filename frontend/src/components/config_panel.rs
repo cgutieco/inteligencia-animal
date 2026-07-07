@@ -8,6 +8,7 @@ pub fn ConfigPanel() -> impl IntoView {
     let chats = use_context::<RwSignal<Vec<ChatSession>>>().expect("chats");
     let active_chat_id = use_context::<RwSignal<Option<String>>>().expect("active_chat_id");
     let language = use_context::<RwSignal<Language>>().expect("language");
+    let resolved_language = use_context::<Memo<Language>>().expect("resolved_language");
 
     let animal = use_context::<Memo<AnimalType>>().expect("AnimalType");
 
@@ -54,30 +55,32 @@ pub fn ConfigPanel() -> impl IntoView {
 
     let update_language = move |val: String| {
         let new_lang = match val.as_str() {
+            "system" => Language::System,
             "es" => Language::Es,
             "en" => Language::En,
-            _ => Language::Es,
+            _ => Language::System,
         };
         language.set(new_lang);
     };
 
     let animal_options = Memo::new(move |_| vec![
-        SelectOption { value: "cat".to_string(), label: AnimalType::Cat.label(language.get()).to_string() },
-        SelectOption { value: "octopus".to_string(), label: AnimalType::Octopus.label(language.get()).to_string() },
-        SelectOption { value: "elephant".to_string(), label: AnimalType::Elephant.label(language.get()).to_string() },
-        SelectOption { value: "chicken".to_string(), label: AnimalType::Chicken.label(language.get()).to_string() },
+        SelectOption { value: "cat".to_string(), label: AnimalType::Cat.label(resolved_language.get()).to_string() },
+        SelectOption { value: "octopus".to_string(), label: AnimalType::Octopus.label(resolved_language.get()).to_string() },
+        SelectOption { value: "elephant".to_string(), label: AnimalType::Elephant.label(resolved_language.get()).to_string() },
+        SelectOption { value: "chicken".to_string(), label: AnimalType::Chicken.label(resolved_language.get()).to_string() },
     ]);
 
     let intelligence_options = Memo::new(move |_| vec![
-        SelectOption { value: "high".to_string(), label: IntelligenceLevel::High.label(language.get()).to_string() },
-        SelectOption { value: "medium".to_string(), label: IntelligenceLevel::Medium.label(language.get()).to_string() },
-        SelectOption { value: "low".to_string(), label: IntelligenceLevel::Low.label(language.get()).to_string() },
+        SelectOption { value: "high".to_string(), label: IntelligenceLevel::High.label(resolved_language.get()).to_string() },
+        SelectOption { value: "medium".to_string(), label: IntelligenceLevel::Medium.label(resolved_language.get()).to_string() },
+        SelectOption { value: "low".to_string(), label: IntelligenceLevel::Low.label(resolved_language.get()).to_string() },
     ]);
 
-    let language_options = vec![
-        SelectOption { value: "es".to_string(), label: "Español".to_string() },
-        SelectOption { value: "en".to_string(), label: "English".to_string() },
-    ];
+    let language_options = Memo::new(move |_| vec![
+        SelectOption { value: "system".to_string(), label: Language::System.label(resolved_language.get()).to_string() },
+        SelectOption { value: "es".to_string(), label: Language::Es.label(resolved_language.get()).to_string() },
+        SelectOption { value: "en".to_string(), label: Language::En.label(resolved_language.get()).to_string() },
+    ]);
 
     view! {
         <div class="config-panel">
@@ -112,10 +115,11 @@ pub fn ConfigPanel() -> impl IntoView {
                 <span class="material-symbols-outlined">{"language"}</span>
                 <CustomSelect
                     value=Signal::derive(move || match language.get() {
+                        Language::System => "system",
                         Language::Es => "es",
                         Language::En => "en",
                     }.to_string())
-                    options=Signal::derive(move || language_options.clone())
+                    options=Signal::derive(move || language_options.get())
                     on_change=Callback::new(update_language)
                 />
             </div>

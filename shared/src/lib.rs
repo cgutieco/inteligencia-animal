@@ -6,17 +6,42 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "lowercase")]
 pub enum Language {
     #[default]
+    System,
     Es,
     En,
 }
 
 impl Language {
     pub fn all() -> &'static [Language] {
-        &[Language::Es, Language::En]
+        &[Language::System, Language::Es, Language::En]
     }
 
-    pub fn label(&self) -> &'static str {
+    pub fn resolve(&self, browser_lang: Option<String>) -> Language {
         match self {
+            Language::System => {
+                if let Some(lang) = browser_lang {
+                    if lang.to_lowercase().starts_with("es") {
+                        Language::Es
+                    } else {
+                        Language::En
+                    }
+                } else {
+                    Language::En
+                }
+            }
+            other => *other,
+        }
+    }
+
+    pub fn label(&self, resolved: Language) -> &'static str {
+        match self {
+            Language::System => {
+                if resolved == Language::Es {
+                    "Sistema"
+                } else {
+                    "System"
+                }
+            }
             Language::Es => "Español",
             Language::En => "English",
         }
@@ -48,13 +73,13 @@ impl AnimalType {
     pub fn label(&self, lang: Language) -> &'static str {
         match (self, lang) {
             (AnimalType::Cat, Language::Es) => "Gato",
-            (AnimalType::Cat, Language::En) => "Cat",
+            (AnimalType::Cat, Language::En) | (AnimalType::Cat, Language::System) => "Cat",
             (AnimalType::Octopus, Language::Es) => "Pulpo",
-            (AnimalType::Octopus, Language::En) => "Octopus",
+            (AnimalType::Octopus, Language::En) | (AnimalType::Octopus, Language::System) => "Octopus",
             (AnimalType::Elephant, Language::Es) => "Elefante",
-            (AnimalType::Elephant, Language::En) => "Elephant",
+            (AnimalType::Elephant, Language::En) | (AnimalType::Elephant, Language::System) => "Elephant",
             (AnimalType::Chicken, Language::Es) => "Gallina",
-            (AnimalType::Chicken, Language::En) => "Chicken",
+            (AnimalType::Chicken, Language::En) | (AnimalType::Chicken, Language::System) => "Chicken",
         }
     }
 }
@@ -87,11 +112,11 @@ impl IntelligenceLevel {
     pub fn label(&self, lang: Language) -> &'static str {
         match (self, lang) {
             (IntelligenceLevel::High, Language::Es) => "Alta",
-            (IntelligenceLevel::High, Language::En) => "High",
+            (IntelligenceLevel::High, Language::En) | (IntelligenceLevel::High, Language::System) => "High",
             (IntelligenceLevel::Medium, Language::Es) => "Media",
-            (IntelligenceLevel::Medium, Language::En) => "Medium",
+            (IntelligenceLevel::Medium, Language::En) | (IntelligenceLevel::Medium, Language::System) => "Medium",
             (IntelligenceLevel::Low, Language::Es) => "Baja",
-            (IntelligenceLevel::Low, Language::En) => "Low",
+            (IntelligenceLevel::Low, Language::En) | (IntelligenceLevel::Low, Language::System) => "Low",
         }
     }
 }
@@ -156,7 +181,7 @@ impl ChatSession {
             id: uuid::Uuid::new_v4().to_string(),
             title: match language {
                 Language::Es => "Nueva Conversación",
-                Language::En => "New Conversation",
+                _ => "New Conversation",
             }.to_string(),
             animal,
             intelligence,

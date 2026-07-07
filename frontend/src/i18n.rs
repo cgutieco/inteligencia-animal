@@ -54,7 +54,7 @@ pub fn get_translations(lang: Language) -> Translations {
             app_title: "IA | Inteligencia Animal",
             new_conversation: "Nueva Conversación",
         },
-        Language::En => Translations {
+        Language::En | Language::System => Translations {
             new_chat: "New Chat",
             chats_title: "CHATS",
             settings_title: "SETTINGS",

@@ -10,13 +10,13 @@ pub fn Sidebar() -> impl IntoView {
     let sidebar_open = use_context::<RwSignal<bool>>().expect("sidebar_open");
     let chats = use_context::<RwSignal<Vec<ChatSession>>>().expect("chats");
     let active_chat_id = use_context::<RwSignal<Option<String>>>().expect("active_chat_id");
-    let language = use_context::<RwSignal<Language>>().expect("language");
     let i18n = use_context::<Memo<Translations>>().expect("i18n");
+    let resolved_language = use_context::<Memo<Language>>().expect("resolved_language");
 
     let menu_open_for = RwSignal::new(Option::<String>::None);
 
     let on_new_chat = move |_| {
-        let current_lang = language.get();
+        let current_lang = resolved_language.get();
         let mut new_chat =
             ChatSession::new(AnimalType::Cat, IntelligenceLevel::Medium, current_lang);
         new_chat.title = i18n.get().new_conversation.to_string();
